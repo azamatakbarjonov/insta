@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Buyurtmalar paneli</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #6dd5fa, #2980b9);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            margin-top: 50px;
+            background-color: #ffffffdd;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        td, th {
+            padding: 12px;
+            border: 1px solid #dee2e6;
+        }
+
+        .btn-approve {
+            background-color: #27ae60;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .btn-cancel {
+            background-color: #e74c3c;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .text-muted {
+            color: gray;
+        }
+
+        @media (max-width: 768px) {
+            .table-responsive {
+                font-size: 14px;
+            }
+
+            .container {
+                padding: 15px;
+                margin-top: 20px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Buyurtmalar paneli</h1>
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ism</th>
+                        <th>Telefon</th>
+                        <th>Odamlar</th>
+                        <th>Xizmat</th>
+                        <th>Vaqti</th>
+                        <th>Status</th>
+                        <th>Amallar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{ order.name }}</td>
+                        <td>{{ order.phone }}</td>
+                        <td>{{ order.people_count }}</td>
+                        <td>{{ order.get_service_type_display }}</td>
+                        <td>{{ order.appointment_date|date:"Y-m-d H:i" }}</td>
+                        <td>{{ order.status }}</td>
+                        <td>
+                            {% if order.status == 'kutilmoqda' %}
+                                <a href="{% url 'approve_order' order.id %}" class="btn-approve">✅</a>
+                                <a href="{% url 'cancel_order' order.id %}" class="btn-cancel">❌</a>
+                            {% else %}
+                                <span class="text-muted">✔</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted">Buyurtmalar hali yo‘q.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+
+
